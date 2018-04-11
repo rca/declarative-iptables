@@ -1,0 +1,2 @@
+class IPTables(dict):
+    pass
