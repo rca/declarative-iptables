@@ -3,7 +3,7 @@ from .tables import IPTables
 
 class IPTablesParser(object):
     def __init__(self):
-        self.tables = {}
+        self.tables = IPTables()
         self._current_table = None
         self._current_table_name = None
 
