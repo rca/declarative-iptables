@@ -9,4 +9,4 @@ class IPTables(dict):
 
         for idx, _rule in enumerate(chain['rules']):
             if _rule == rule:
-                return idx
+                return idx, _rule
