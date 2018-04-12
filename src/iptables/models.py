@@ -15,7 +15,7 @@ class Chain(object):
 
     @property
     def jump(self):
-        return f'-j {self.name}'
+        return '-j {}'.format(self.name)
 
 
 class Rule(object):
@@ -27,7 +27,7 @@ class Rule(object):
         return self.rule == other.rule
 
     def __repr__(self):
-        return f'<Rule: {self}>'
+        return '<Rule: {}>'.format(self)
 
     def __str__(self):
         return str(self.rule)
