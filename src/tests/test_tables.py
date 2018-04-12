@@ -1,5 +1,6 @@
 import unittest
 
+from iptables import Rule
 from iptables.tables import IPTables
 
 from tests.utils import get_tables
@@ -15,7 +16,7 @@ class IPTablesTestCase(unittest.TestCase):
 
         chain = tables.find_chain('mangle', 'OPENVPN_BERTO')
 
-        self.assertEqual({'rules': [['-o', 'tun0', '-j', 'DROP']]}, chain)
+        self.assertEqual({'rules': [Rule('-o tun0 -j DROP')]}, chain)
 
     def test_find_missing_chain(self, *mocks):
         tables = self.tables
@@ -27,16 +28,17 @@ class IPTablesTestCase(unittest.TestCase):
     def test_find_rule(self, *mocks):
         tables = self.tables
 
-        rule = ['-o', 'tun0', '-j', 'DROP']
+        rule = Rule('-o tun0 -j DROP')
 
-        idx = tables.find_rule('mangle', 'OPENVPN_BERTO', rule)
+        idx, _rule = tables.find_rule('mangle', 'OPENVPN_BERTO', rule)
 
         self.assertEqual(0, idx)
+        self.assertLessEqual(70, _rule.priority)
 
     def test_find_missing_rule(self, *mocks):
         tables = self.tables
 
-        rule = ['-o', 'tun0', '-d', '192.168.1.1/32', '-j', 'ACCEPT']
+        rule = Rule('-o tun0 -d 192.168.1.1/32 -j ACCEPT')
 
         idx = tables.find_rule('mangle', 'OPENVPN_BERTO', rule)
 
