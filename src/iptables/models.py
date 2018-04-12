@@ -31,3 +31,26 @@ class Rule(object):
 
     def __str__(self):
         return str(self.rule)
+
+
+class Table(object):
+    valid_tables = (
+        'raw',
+        'filter',
+        'nat',
+        'mangle',
+        'security',
+    )
+
+    def __init__(self, name):
+        if name not in self.valid_tables:
+            raise TableError('table name={} is not valid'.format(name))
+
+        self.name = name
+        self.chains = []
+
+    def __str__(self):
+        return str(self.name)
+
+    def add_chain(self, chain):
+        self.chains.append(chain)
