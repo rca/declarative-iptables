@@ -1,21 +1,53 @@
 class Chain(object):
-    def __init__(self, name, delete_existing=False):
+    def __init__(self, table, name, delete_existing=False):
+        self.table = table
         self.name = name
         self.delete_existing = delete_existing
+
+        self.table.add_chain(self)
 
         self.rules = []
 
     def add_rule(self, rule):
         if isinstance(rule, str):
-            rule_obj = Rule(str)
+            rule_obj = Rule(rule)
         else:
             rule_obj = rule
 
         self.rules.append(rule_obj)
 
+    def get_full_rule(self, rule_s: str):
+        return '-t {} -A {} {}'.format(self.table, self.name, rule_s)
+
     @property
     def jump(self):
         return '-j {}'.format(self.name)
+
+    def modify_tables(self, tables):
+        existing_rules = []
+        new_rules = []
+
+        chain = tables.find_chain(self.table.name, self.name)
+        if chain and self.delete_existing:
+            tables.flush_chain(self.table.name, self.name)
+
+            existing_rules = []
+        elif chain:
+            existing_rules = chain['rules']
+
+        # go through the existing rules and prune out any of the ones
+        # being declared
+        for rule in self.rules:
+            if rule in existing_rules:
+                idx = existing_rules.index(rule)
+                existing_rules.pop(idx)
+
+            new_rules.append(rule)
+
+        new_rules.extend(existing_rules)
+
+        for rule in sorted(new_rules, key=lambda x: -x.priority):
+            tables.executor(self.get_full_rule(rule))
 
 
 class Rule(object):
