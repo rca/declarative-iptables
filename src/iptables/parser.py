@@ -1,3 +1,4 @@
+from .models import Rule
 from .tables import IPTables
 
 
@@ -42,11 +43,11 @@ class IPTablesParser(object):
         self._current_table.setdefault(name, current_chain)
 
     def parse_chain_rule(self, line):
-        action, chain_name, *args = line_split = line.split()
+        action, chain_name, rule_s = line.split(' ', 2)
 
         chain = self._current_table[chain_name]
 
-        chain['rules'].append(args)
+        chain['rules'].append(Rule(rule_s, priority=70))
 
     def parse_table(self, line):
         name = line[1:].strip()
