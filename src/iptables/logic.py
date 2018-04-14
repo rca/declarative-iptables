@@ -5,6 +5,10 @@ from .models import Chain, Table
 from .parser import IPTablesParser
 
 
+class CommandError(Exception):
+    pass
+
+
 def run_command(command: str):
     command_split = shlex.split(command)
 
