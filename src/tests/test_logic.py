@@ -22,7 +22,7 @@ class PlanTestCase(unittest.TestCase):
         # rules with higher number priority get added to the chain first
         # when updating an existing chain, rules already in the chain get a priority of 70.
         # being added is compared to existing rules and will be added if missing or left alone.
-        openvpn_chain.add_rule(iptables.Rule('-o ! tun0 -j RETURN', priority=100))
+        openvpn_chain.add_rule(iptables.Rule('! -o tun0 -j RETURN', priority=100))
         openvpn_chain.add_rule(berto_chain.jump)
         openvpn_chain.add_rule(iptables.Rule('-j DROP', priority=10))
 
