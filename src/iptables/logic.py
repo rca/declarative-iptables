@@ -41,8 +41,8 @@ class Plan(object):
         tables = self.get_current_tables()
         tables.executor = Executor()
 
-        for step in self.steps:
-            step.modify_tables(tables)
+        for chain in self.steps:
+            chain.modify_tables(tables)
 
     def get_chain(self, table_name, chain_name, delete_existing=False):
         table = Table(table_name)
