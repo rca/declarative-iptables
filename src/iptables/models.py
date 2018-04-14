@@ -43,7 +43,7 @@ class Chain(object):
                 existing_rules = chain['rules']
 
         if create_chain:
-            tables.executor('-t {} -N {}'.format(self.table, self))
+            tables.executor(self.table.get_full_rule('-N {}'.format(self)))
 
         # go through the existing rules and prune out any of the ones
         # being declared
