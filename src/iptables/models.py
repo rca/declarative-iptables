@@ -47,6 +47,9 @@ class Chain(object):
         if create_chain:
             tables.executor(self.table.get_full_rule('-N {}'.format(self)))
 
+        # set the default policy
+        tables.executor(self.table.get_full_rule('-P {} {}'.format(self, self.default_policy.upper())))
+
         # go through the existing rules and prune out any of the ones
         # being declared
         for rule in self.rules:
