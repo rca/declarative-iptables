@@ -30,20 +30,29 @@ class Chain(object):
         existing_rules = []
         new_rules = []
 
+        create_chain = True
         chain = tables.find_chain(self.table.name, self.name)
-        if chain and self.delete_existing:
-            tables.flush_chain(self.table.name, self.name)
+        if chain:
+            create_chain = False
 
-            existing_rules = []
-        elif chain:
-            existing_rules = chain['rules']
+            if self.delete_existing:
+                tables.flush_chain(self.table.name, self.name)
+
+                existing_rules = []
+            else:
+                existing_rules = chain['rules']
+
+        if create_chain:
+            tables.executor('-t {} -N {}'.format(self.table, self))
 
         # go through the existing rules and prune out any of the ones
         # being declared
         for rule in self.rules:
-            if rule in existing_rules:
+            while rule in existing_rules:
                 idx = existing_rules.index(rule)
                 existing_rules.pop(idx)
+
+                tables.executor('-t {} -D {} {}'.format(self.table, self, idx+1))
 
             new_rules.append(rule)
 
