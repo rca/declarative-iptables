@@ -20,7 +20,7 @@ class Chain(object):
         self.rules.append(rule_obj)
 
     def get_full_rule(self, rule_s: str):
-        return '-t {} -A {} {}'.format(self.table, self.name, rule_s)
+        return self.table.get_full_rule('-A {} {}'.format(self.name, rule_s))
 
     @property
     def jump(self):
@@ -98,3 +98,6 @@ class Table(object):
 
     def add_chain(self, chain):
         self.chains.append(chain)
+
+    def get_full_rule(self, rule_s: str):
+        return '-t {} {}'.format(self, rule_s)
