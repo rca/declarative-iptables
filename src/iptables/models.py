@@ -1,5 +1,5 @@
 class Chain(object):
-    def __init__(self, table, name, delete_existing=False):
+    def __init__(self, table, name, default_policy='drop', delete_existing=False):
         self.table = table
         self.name = name
         self.delete_existing = delete_existing
@@ -7,6 +7,8 @@ class Chain(object):
         self.table.add_chain(self)
 
         self.rules = []
+
+        self.default_policy = default_policy
 
     def __str__(self):
         return str(self.name)
