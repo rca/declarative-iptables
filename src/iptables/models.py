@@ -8,6 +8,9 @@ class Chain(object):
 
         self.rules = []
 
+    def __str__(self):
+        return str(self.name)
+
     def add_rule(self, rule):
         if isinstance(rule, str):
             rule_obj = Rule(rule)
