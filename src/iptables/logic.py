@@ -15,6 +15,11 @@ def run_command(command: str):
     proc = subprocess.Popen(command_split, stdout=subprocess.PIPE)
     stdout, stderr = proc.communicate()
 
+    status = proc.wait()
+
+    if status != 0:
+        raise CommandError('command={} failed with status={}'.format(command, status))
+
     return proc, stdout, stderr
 
 
