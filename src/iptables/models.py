@@ -1,4 +1,12 @@
 class Chain(object):
+    built_in_chains = (
+        'FORWARD',
+        'INPUT',
+        'OUTPUT',
+        'POSTROUTING',
+        'PREROUTING',
+    )
+
     def __init__(self, table, name, default_policy='drop', delete_existing=False):
         self.table = table
         self.name = name
@@ -44,7 +52,8 @@ class Chain(object):
             else:
                 existing_rules = chain['rules']
 
-        if create_chain:
+        # only create a chain if it's not a built-in one
+        if create_chain and self.name not in self.built_in_chains:
             tables.executor(self.table.get_full_rule('-N {}'.format(self)))
 
         # set the default policy
