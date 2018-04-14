@@ -34,7 +34,7 @@ class Plan(object):
     def __init__(self):
         self.steps = []
 
-    def create_chain(self, table_name, chain_name):
+    def add_chain(self, table_name, chain_name):
         return self.get_chain(table_name, chain_name, delete_existing=True)
 
     def execute(self):
@@ -57,3 +57,6 @@ class Plan(object):
         _, stdout, _ = run_command(command)
 
         return IPTablesParser.parse(stdout.decode('utf8'))
+
+    def modify_chain(self, table_name, chain_name):
+        return self.get_chain(table_name, chain_name, delete_existing=False)
