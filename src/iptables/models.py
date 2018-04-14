@@ -71,7 +71,6 @@ class Chain(object):
 
             new_rules.append(rule)
 
-        new_rules.extend(existing_rules)
 
         for rule in sorted(new_rules, key=lambda x: -x.priority):
             tables.executor(self.get_full_rule(rule))
