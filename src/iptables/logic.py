@@ -25,7 +25,7 @@ def run_command(command: str):
 
 class Executor(object):
     def __call__(self, command):
-        full_command = 'iptables {}'.format(command)
+        full_command = '/sbin/iptables {}'.format(command)
 
         return run_command(full_command)
 
@@ -53,7 +53,7 @@ class Plan(object):
         return step
 
     def get_current_tables(self):
-        command = 'iptables-save'
+        command = '/sbin/iptables-save'
         _, stdout, _ = run_command(command)
 
         return IPTablesParser.parse(stdout.decode('utf8'))
