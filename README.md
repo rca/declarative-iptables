@@ -7,6 +7,7 @@ This interface aims to be declarative.  Rather than looking at issuing changes d
 
 Additionally, because it's unknown what changes other systems have made, any tables and rules that have not been declared are left untouched.
 
+
 ## Example
 
 ```
@@ -15,11 +16,10 @@ import iptables
 plan = iptables.Plan()
 
 # this will delete an existing table and create it from scratch
-berto_chain = plan.create_chain('OPENVPN_BERTO')
+berto_chain = plan.add_chain('OPENVPN_BERTO')
 
 # rules are added with a default priority of 50
 berto_chain.add_rule(iptables.Rule('-o tun0 -s 192.168.2.2 -d 192.168.1.1 -j ACCEPT'))
-
 
 # this will get an existing table and create it if it does not exist
 openvpn_chain = plan.get_chain('OPENVPN')
