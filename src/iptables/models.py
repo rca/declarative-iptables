@@ -1,11 +1,5 @@
 class Chain(object):
-    built_in_chains = (
-        'FORWARD',
-        'INPUT',
-        'OUTPUT',
-        'POSTROUTING',
-        'PREROUTING',
-    )
+    built_in_chains = ('FORWARD', 'INPUT', 'OUTPUT', 'POSTROUTING', 'PREROUTING')
 
     def __init__(self, table, name, default_policy='drop', delete_existing=False):
         self.table = table
@@ -58,7 +52,11 @@ class Chain(object):
 
         # set the default policy only on built-in chains
         if self.name in self.built_in_chains:
-            tables.executor(self.table.get_full_rule('-P {} {}'.format(self, self.default_policy.upper())))
+            tables.executor(
+                self.table.get_full_rule(
+                    '-P {} {}'.format(self, self.default_policy.upper())
+                )
+            )
 
         # go through the existing rules and prune out any of the ones
         # being declared
@@ -67,17 +65,16 @@ class Chain(object):
                 idx = existing_rules.index(rule)
                 existing_rules.pop(idx)
 
-                tables.executor('-t {} -D {} {}'.format(self.table, self, idx+1))
+                tables.executor('-t {} -D {} {}'.format(self.table, self, idx + 1))
 
             new_rules.append(rule)
-
 
         for rule in sorted(new_rules, key=lambda x: -x.priority):
             tables.executor(self.get_full_rule(rule))
 
 
 class Rule(object):
-    def __init__(self, rule: str, priority: int=50, **kwargs):
+    def __init__(self, rule: str, priority: int = 50, **kwargs):
         self.rule = rule
         self.priority = priority
 
@@ -92,13 +89,7 @@ class Rule(object):
 
 
 class Table(object):
-    valid_tables = (
-        'raw',
-        'filter',
-        'nat',
-        'mangle',
-        'security',
-    )
+    valid_tables = ('raw', 'filter', 'nat', 'mangle', 'security')
 
     def __init__(self, name):
         if name not in self.valid_tables:

@@ -36,9 +36,7 @@ class IPTablesParser(object):
         line_split = line[1:].split()
         name = line_split[0]
 
-        current_chain = {
-            'rules': [],
-        }
+        current_chain = {'rules': []}
 
         self._current_table.setdefault(name, current_chain)
 
