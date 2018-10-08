@@ -11,7 +11,7 @@ class PlanTestCase(unittest.TestCase):
         plan = iptables.Plan()
 
         # this will delete an existing table and create it from scratch
-        berto_chain = plan.create_chain('mangle', 'OPENVPN_BERTO')
+        berto_chain = plan.get_chain('mangle', 'OPENVPN_BERTO')
 
         # rules are added with a default priority of 50
         berto_chain.add_rule('-o tun0 -s 192.168.2.2 -d 192.168.1.1 -j ACCEPT')
