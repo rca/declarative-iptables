@@ -7,6 +7,7 @@ from iptables.parser import IPTablesParser
 
 from tests.utils import get_content
 
+
 class IPTablesParserTestCase(unittest.TestCase):
     def test_parse(self, *mocks):
         content = get_content('iptables-save_with-mangle.txt')
@@ -18,5 +19,12 @@ class IPTablesParserTestCase(unittest.TestCase):
 
         self.assertEqual(
             sorted(tables['mangle'].keys()),
-            ['FORWARD', 'INPUT', 'OPENVPN_BERTO', 'OUTPUT', 'POSTROUTING', 'PREROUTING']
+            [
+                'FORWARD',
+                'INPUT',
+                'OPENVPN_BERTO',
+                'OUTPUT',
+                'POSTROUTING',
+                'PREROUTING',
+            ],
         )
